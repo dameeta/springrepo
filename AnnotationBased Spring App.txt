@@ -1,0 +1,78 @@
+public class Country {
+ 
+    String countryName;
+ 
+    public Country(String countryName) {
+  this.countryName=countryName;
+ }
+ public String getCountryName() {
+        return countryName;
+    }
+    public void setCountryName(String countryName) {
+        this.countryName = countryName;
+    }
+ 
+}
+ 
+4. Create application configuration class
+This class will have @Configuaration and @Bean annotation .
+
+Create class called ApplicationConfiguration.java in package com.test.annote.config
+
+
+ 
+package com.test.annote.config;
+import com.test.annote.model.Country;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+ 
+@Configuration
+public class ApplicationConfiguration {
+ 
+ @Bean(name="countryObj")
+ public Country getCountry()
+ {
+  return new Country("India");
+ }
+ 
+}
+ 
+Above file is equivalent to below spring configuration xml
+
+
+ 
+<?xml version="1.0" encoding="UTF-8"?<
+<beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+    xmlns:context="http://www.springframework.org/schema/context"  
+    xsi:schemaLocation="http://www.springframework.org/schema/beans  
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+    http://www.springframework.org/schema/context  
+    http://www.springframework.org/schema/context/spring-context-3.0.xsd"< 
+<context:annotation-config/<  
+ <bean id="countryObj" class="com.test.annote.Country" <
+  <property name="countryName" value="India"/<
+ </bean<
+</beans<
+ 
+5. Create main class to run the program
+Create class called SpringJavaConfigMain.java
+
+ 
+package com.test.annote.main;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import com.test.annote.config.ApplicationConfiguration;
+import com.test.annote.model.Country;;
+ 
+public class SpringJavaConfigMain {
+ 
+ public static void main(String[] args) {
+  @SuppressWarnings("resource")
+  ApplicationContext appContext = new AnnotationConfigApplicationContext(ApplicationConfiguration.class);
+  Country countryObj = (Country) appContext.getBean("countryObj");
+  String countryName=countryObj.getCountryName();
+ 
+  System.out.println("Country name: "+ countryName);
+ }
+}
